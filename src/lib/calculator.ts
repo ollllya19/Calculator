@@ -4,6 +4,7 @@ import { Operation } from './operation';
 
 export class Calculator {
     static operators: string = '+-*/'
+    static nums: string = '1234567890'
 
     constructor(){}
 
@@ -11,7 +12,7 @@ export class Calculator {
         const a: number = numStack.pop()
         const b: number = numStack.pop()
         const oper: Operation = operStack.pop()
-        const rez = oper.perform(a, b)
+        const rez = oper.perform(b, a)
 
         if (rez === null) 
             return false
@@ -30,12 +31,14 @@ export class Calculator {
             if (input[i] === ' ') 
                 continue
             else if (!!Number(input[i])) {
+                const t= !!Number(input[i + 1])
                 let num = input[i]
-                while(i + 1 < input.length && (Number(input[i + 1]) || input[i + 1] === '.')){
+                while(i + 1 < input.length && (Calculator.nums.includes(input[i + 1]) || input[i + 1] === '.')){
                     num += input[i + 1]
                     i += 1
                 }
                 numStack.push(Number(num))
+                console.log(Number(num))
                 continue
             }
             else if (input[i] === '(') {
@@ -60,9 +63,9 @@ export class Calculator {
                     continue
                 }
                 if (OperFactory.factoryMethod(input[i]).getProirity() <= operStack.top.getProirity()) {
-                    operStack.push(OperFactory.factoryMethod(input[i]))
                     if (!Calculator.calculate(operStack, numStack))
                         return false
+                    operStack.push(OperFactory.factoryMethod(input[i]))
                     continue
                 }
             }
