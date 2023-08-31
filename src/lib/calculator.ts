@@ -38,7 +38,7 @@ export class Calculator {
                     i += 1
                 }
                 numStack.push(Number(num))
-                console.log(Number(num))
+    
                 continue
             }
             else if (input[i] === '(') {
